@@ -11,7 +11,7 @@ class HttpClient {
   static Dio dio = Dio();
 
   static initialize() {
-    dio.options.baseUrl = 'https://reqres.in';
+    dio.options.baseUrl = 'http://10.0.2.2:3000';
     dio.options.connectTimeout = const Duration(seconds: 5);
     dio.options.receiveTimeout = const Duration(seconds: 5);
 
@@ -32,9 +32,9 @@ class HttpClient {
 
   // Routes List
 
-  static testRoute() async {
+  static testRoute(Map data) async {
     try {
-      final response = await get('/api/users');
+      final response = await post('/auth/login', data);
       return HttpResponse(
           data: response.data, statusCode: response.statusCode ?? 500);
     } on DioException catch (e) {

@@ -11,7 +11,10 @@ class AuthController {
 
   static signIn() async {
     loading.value = true;
-    HttpResponse res = await HttpClient.testRoute();
+    HttpResponse res = await HttpClient.testRoute({
+      'email': emailController.text,
+      'password': passwordController.text,
+    });
     print(res.data);
     loading.value = false;
   }
