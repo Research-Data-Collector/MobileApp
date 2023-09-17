@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:surveyy/controllers/auth_controller.dart';
 import 'package:surveyy/utils/backgrounds.dart';
 import 'package:surveyy/utils/text_styles.dart';
-import 'package:surveyy/views/login.dart';
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class Auth extends StatelessWidget {
+  const Auth({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: Get.width * 0.8,
                   height: Get.height * 0.7,
                   child: Card(
@@ -57,13 +57,20 @@ class Home extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-                          Container(
+                          SizedBox(
                               width: double.infinity,
                               height: 56,
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('Sign In'),
-                              ))
+                              child: Obx(() => ElevatedButton(
+                                    onPressed: () {
+                                      AuthController.signIn();
+                                    },
+                                    child: AuthController.loading.value
+                                        ? const CircularProgressIndicator(
+                                            valueColor: AlwaysStoppedAnimation(
+                                                Colors.white),
+                                          )
+                                        : const Text('Sign In'),
+                                  )))
                         ],
                       ),
                     ),
