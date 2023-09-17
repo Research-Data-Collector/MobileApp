@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:surveyy/auth/auth.dart';
-import 'package:surveyy/views/home.dart';
+import 'package:surveyy/utils/http_client.dart';
 import 'package:get/get.dart';
 
 void main() {
+  HttpClient.initialize();
   runApp(const SurveyY());
 }
 
