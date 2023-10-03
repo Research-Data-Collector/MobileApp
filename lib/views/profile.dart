@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surveyy/controllers/auth_controller.dart';
 import 'package:surveyy/views/submission.dart';
 
 void main() {
@@ -14,29 +15,30 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFFFFF0),
       body: Stack(
         children: [
           // Background Image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/right-bg.png"),
-                fit: BoxFit.cover,
-                opacity: 0.88, // Adjust opacity as needed
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage("assets/images/right-bg.png"),
+          //       fit: BoxFit.cover,
+          //       opacity: 0.88, // Adjust opacity as needed
+          //     ),
+          //   ),
+          // ),
           // Transparent White Layer
           Container(
-            color: Colors.white.withOpacity(0.75), // Adjust opacity as needed
-            width: double.infinity,
-            height: double.infinity,
-            margin: const EdgeInsets.fromLTRB(35.0, 70.0, 35.0, 70.0),
+            // color: Colors.grey.withOpacity(0.3), // Adjust opacity as needed
+            // width: double.infinity,
+            // height: double.infinity,
+            // margin: const EdgeInsets.fromLTRB(25.0, 50.0, 35.0, 25.0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
+                  Column(
                     //profile pic and name side by side
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -44,11 +46,11 @@ class ProfilePage extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         width: 80,
                         height: 80,
-                        decoration: const BoxDecoration(
+                        decoration:BoxDecoration(
+
                           borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                          border: Border.fromBorderSide(
-                              BorderSide(color: Colors.white, width: 5.0)),
                           image: DecorationImage(
+
                             image: AssetImage("assets/images/profilepic.jfif"),
                             fit: BoxFit.cover,
                           ),
@@ -57,6 +59,7 @@ class ProfilePage extends StatelessWidget {
                       const SizedBox(width: 16.0),
                       const Text(
                         "John de Gone",
+
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
@@ -64,9 +67,14 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
+                      ElevatedButton(
+                          onPressed:(){
+                            AuthController.logout();
+                          },
+                          child: Text("Logout"))
                     ],
                   ),
-                  const SizedBox(height: 80.0),
+                  const SizedBox(height: 40.0),
                   Opacity(
                     opacity:
                         0.4, // Adjust the opacity value as needed (0.0 to 1.0)
@@ -74,7 +82,19 @@ class ProfilePage extends StatelessWidget {
                       height: 40,
                       margin: const EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: BoxDecoration(
-                        color: Color(0xff5E6167),
+                        color: Colors.white,
+                        boxShadow:[
+                          BoxShadow(
+                            color: Colors.grey.shade600,
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 5),
+                          ),
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            offset: const Offset(-5,0),
+                          )
+                        ],
                         borderRadius: BorderRadius.circular(100.0),
                       ),
                       child: const Row(
@@ -113,7 +133,7 @@ class ProfilePage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 5.0),
-
+//should change in to tiles
                   Container(
                     height: 40,
                     margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -179,6 +199,9 @@ class ProfilePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white60,
+        elevation: 1,
+
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
@@ -186,12 +209,12 @@ class ProfilePage extends StatelessWidget {
                   fontFamily: 'MaterialIcons', matchTextDirection: true),
             ),
             label: 'Research',
-            backgroundColor: Colors.green,
+
           ),
           BottomNavigationBarItem(
             icon: Icon(IconData(0xf5a3, fontFamily: 'MaterialIcons')),
             label: 'Unsynced',
-            backgroundColor: Colors.green,
+
           ),
         ],
         onTap: (index) {
