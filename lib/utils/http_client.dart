@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:surveyy/models/form.dart';
 
 class HttpResponse {
   final dynamic data;
@@ -44,4 +45,26 @@ class HttpClient {
   }
 
   // SignIn
+
+
+  static Future<HttpResponse> getForms() async {
+
+    try {
+      Response response = await post('/admin/getforms',{});
+      print('----------------------------');
+      print(response.data);
+      print('----------------------------');
+      return HttpResponse(
+          data: response.data,
+          statusCode: response.statusCode ?? 500
+      );
+
+    } on DioException catch (e) {
+      print(e);
+      return HttpResponse(
+          data: e.response?.data, statusCode: e.response?.statusCode ?? 500);
+    }
+  }
+
+
 }

@@ -1,20 +1,18 @@
 class AuthUser {
+  final int id;
   final String email;
-  final String token;
+  final String fName;
+  final String lName;
 
-  AuthUser({required this.email, required this.token});
+  AuthUser({required this.id, required this.fName, required this.lName, required this.email});
 
-  factory AuthUser.fromMap(Map<String, dynamic> data) {
+  factory AuthUser.fromJSON(Map<String, dynamic> data) {
     return AuthUser(
+      id:data['id'],
       email: data['email'],
-      token: data['token'],
+      fName: data['fname'],
+      lName: data['lname'],
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'email': email,
-      'token': token,
-    };
-  }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:surveyy/utils/backgrounds.dart';
 import 'package:surveyy/utils/text_styles.dart';
-import 'package:surveyy/views/login.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

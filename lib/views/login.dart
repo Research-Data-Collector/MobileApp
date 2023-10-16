@@ -150,7 +150,7 @@ class _LoginState extends State<LoginPage> {
                     ),
 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -159,7 +159,7 @@ class _LoginState extends State<LoginPage> {
                       child:Obx(() => ElevatedButton(
                         onPressed: (){
                           AuthController.signIn();
-                        }, child: AuthController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : Text('Login',style: TextStyle(
+                        }, child: AuthController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text('Login',style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white
