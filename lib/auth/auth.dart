@@ -49,11 +49,20 @@ class Auth extends StatelessWidget {
                           const SizedBox(
                             height: 16,
                           ),
-                          TextField(),
+                          TextField(
+                            controller: AuthController.emailController,
+                            decoration:
+                                const InputDecoration(label: Text('Email')),
+                          ),
                           const SizedBox(
                             height: 8,
                           ),
-                          TextField(),
+                          TextField(
+                            controller: AuthController.passwordController,
+                            obscureText: AuthController.isPasswordVisible.value,
+                            decoration:
+                                const InputDecoration(label: Text('Password')),
+                          ),
                           const SizedBox(
                             height: 8,
                           ),

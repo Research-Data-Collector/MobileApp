@@ -1,10 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:surveyy/auth/auth.dart';
-import 'package:surveyy/views/home.dart';
+import 'package:surveyy/utils/http_client.dart';
 import 'package:get/get.dart';
+import 'package:surveyy/views/login.dart';
+import 'package:surveyy/views/profile.dart';
+
+import 'controllers/auth_controller.dart';
 
 void main() {
+  HttpClient.initialize();
   runApp(const SurveyY());
+  Timer.periodic(Duration(minutes:1), (timer){
+    AuthController.checkAndLogoutIfNecessary();
+  });
+  //auto logout does not work
 }
 
 class SurveyY extends StatelessWidget {
@@ -33,7 +44,11 @@ class SurveyY extends StatelessWidget {
               ),
             ),
           )),
-      home: const Auth(),
+      home: LoginPage(),
+      getPages: [
+        GetPage(name: '/views', page: () => ProfilePage()),
+      ],
+
     );
   }
 }
