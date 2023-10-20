@@ -47,11 +47,13 @@ class HttpClient {
   // SignIn
 
 
-  static Future<HttpResponse> getForms() async {
+  static Future<HttpResponse> getForms(userEmail) async {
 
     try {
-      Response response = await post('/admin/getforms',{});
-      print('----------------------------');
+      Response response = await post('/admin/getforms', {
+        'email': userEmail, });
+      print(userEmail);
+
       print(response.data);
       print('----------------------------');
       return HttpResponse(
