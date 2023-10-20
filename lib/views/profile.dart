@@ -33,15 +33,18 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           body: SizedBox(
+
             child: Obx(()=> !FormController.loading.value ? ListView.builder(
               itemCount: FormController.forms.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
                     title: Text(FormController.forms[index].title),
+                    subtitle: Text(FormController.forms[index].description),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       FormViewController.formData = FormController.forms[index].data;
+                      //FormViewController.formDescription= FormController.forms[index].description;
                       Get.to(()=> const FormView());
                     },
                   ),

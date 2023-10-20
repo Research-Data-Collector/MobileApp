@@ -12,12 +12,15 @@ class FormView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(FormViewController.formData['title']),
+        //title:Text(FormViewController.formData['Description']),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+
             children: FormViewController.fields,
+
           ),
         ),
       ),
