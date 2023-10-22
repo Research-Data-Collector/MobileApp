@@ -24,6 +24,13 @@ class FormView extends StatelessWidget {
               SizedBox(height: 25,),
               ElevatedButton(
                   onPressed: (){
+                    for (var field in FormViewController.fieldControllers) {
+                      print(field.id);
+                      print(field.question);
+                      print(field.value);
+                      print(field.file);
+
+                    }
 
                   },
                   child: Text('Submit'),
