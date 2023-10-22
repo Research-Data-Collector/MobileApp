@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,7 @@ class FieldController {
 
 class FormViewController {
   static RxBool ready = false.obs;
+  String? name;
 
   static Map formData = {
     "title": "Loading...",
@@ -26,6 +28,8 @@ class FormViewController {
 
   static List<Widget> fields = [];
   static List<FieldController> fieldControllers = [];
+
+
 
   static Future<void> buildFields() async {
     fields.clear();
@@ -184,10 +188,11 @@ class FormViewController {
   }
 
   static void addFileFields(Map field) {
-    fieldControllers.add(
-        FieldController(id: field['id'],
-            question: field['label']));
 
+    fieldControllers.add(
+        FieldController(id: field['id'], question: field['label']));
+    TextEditingController fileNameController = TextEditingController();
+    String fileName='';
     fields.add(Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Column(
@@ -196,16 +201,51 @@ class FormViewController {
           Text(field['label']),
           Row(
             children: [
-              ElevatedButton(
-                onPressed: () {},
+              Container(
+                child:ElevatedButton(
+                onPressed: () async {
+                  FilePickerResult? result = await FilePicker.platform.pickFiles();
+                  if(result != null) {
+
+                    PlatformFile file = result.files.first;
+                    fileName=file.name;
+                    fileNameController.text=fileName;
+
+                    print(file.name);
+                    print(file.bytes);
+                    print(file.size);
+                    print(file.extension);
+                    print(file.path);
+                  } else {
+                    // User canceled the picker
+                  }
+                },
                 child: const Text('Choose File'),
+
+
               ),
-              const SizedBox(width: 8),
-              Text('Selected FILE NAME HERE'),
+
+              ),
+              const SizedBox(width: 12),
+
+
+
+              //Text('Selected FILE NAME HERE'),
+              Expanded(
+                child: TextField(
+                  controller: fileNameController,
+                  decoration: const InputDecoration(
+                    border:InputBorder.none,
+                  ),
+                ),
+              ),
             ],
           )
+
         ],
+
       ),
+
     ));
 
   }
