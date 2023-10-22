@@ -11,7 +11,7 @@ class FormController {
   static fetchFormsForAdmin() async {
       loading.value = true;
       var userEmail=AuthController.emailController.text;
-      print(userEmail);
+      //print(userEmail);
       HttpResponse fetchedForms = await HttpClient.getForms(userEmail);
       forms.value = List.generate(fetchedForms.data.length, (index) => FormModel.fromJson(fetchedForms.data[index]));
       loading.value = false;

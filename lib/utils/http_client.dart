@@ -52,9 +52,9 @@ class HttpClient {
     try {
       Response response = await post('/admin/getforms', {
         'email': userEmail, });
-      print(userEmail);
-
-      print(response.data);
+      // print(userEmail);
+      //
+      // print(response.data);
       print('----------------------------');
       return HttpResponse(
           data: response.data,

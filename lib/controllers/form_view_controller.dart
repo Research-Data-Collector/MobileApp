@@ -12,9 +12,17 @@ class FieldController {
   TextEditingController? controller;
 
   FieldController({required this.id, required this.question, this.value, this.file, this.controller});
-
+  // {
+  // if (controller != null) {
+  // controller!.addListener(() {
+  // final answer = controller!.text;
+  // print('Field ID: $id, Question: $question, Answer: $answer');
+  // });
+  // }
+  // }
 
 }
+
 
 class FormViewController {
   static RxBool ready = false.obs;
@@ -25,9 +33,11 @@ class FormViewController {
     "fields": [],
 
   };
+  Map<String,String> fieldValues = {};
 
   static List<Widget> fields = [];
   static List<FieldController> fieldControllers = [];
+  //print(fields)
 
 
 
@@ -66,12 +76,24 @@ class FormViewController {
     return fieldControllers.firstWhere((element) => element.id == id);
   }
 
+
+
+
   static void addTextField(Map field) {
-    fieldControllers.add(
-        FieldController(
-            controller: TextEditingController(),
-            id: field['id'],
-        question: field['label']));
+    final controller = TextEditingController();
+    final fieldController = FieldController(
+      controller: controller,
+      id: field['id'],
+      question: field['label'],
+    );
+
+    // Listen for changes in the TextField and update the value in FieldController
+    controller.addListener(() {
+      final answer = controller.text;
+      fieldController.value = RxString(answer);
+    });
+
+    fieldControllers.add(fieldController);
 
     fields.add(Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -80,7 +102,7 @@ class FormViewController {
         children: [
           Text(field['label']),
           TextField(
-            controller: getVorC(field['id']).controller,
+            controller: controller,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -88,14 +110,36 @@ class FormViewController {
         ],
       ),
     ));
-    print('Answer to Text Field: ${getVorC(field['id']).controller.text}');
-
   }
 
+
   static void addNumberField(Map field) {
-    fieldControllers.add(
-        FieldController(controller: TextEditingController(), id: field['id'],
-            question: field['label']));
+    final controller = TextEditingController();
+    final fieldController = FieldController(
+      controller: controller,
+      id: field['id'],
+      question: field['label'],
+    );
+
+    // Listen for changes in the TextField and update the value in FieldController
+    controller.addListener(() {
+      final enteredText = controller.text;
+      if (enteredText.isEmpty) {
+        fieldController.value = RxString('null'); // No value for empty input
+      } else {
+        final numberValue = int.tryParse(enteredText); // Try to parse the entered text as an integer
+        if (numberValue != null) {
+          fieldController.value = RxString(numberValue.toString()); // Store the number as a string
+        } else {
+          // Handle invalid input, e.g., non-numeric characters
+          // You can add your own error handling logic here
+          // For now, set the value to null
+          fieldController.value = RxString('null');
+        }
+      }
+    });
+
+    fieldControllers.add(fieldController);
 
     fields.add(Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -104,7 +148,7 @@ class FormViewController {
         children: [
           Text(field['label']),
           TextField(
-            controller: getVorC(field['id']).controller,
+            controller: controller,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -114,6 +158,7 @@ class FormViewController {
       ),
     ));
   }
+
 
   static void addDropdownField(Map field) {
     List<String> values = field['data'].cast<String>();
@@ -188,11 +233,12 @@ class FormViewController {
   }
 
   static void addFileFields(Map field) {
+    final fieldController = FieldController(id: field['id'], question: field['label']);
+    fieldControllers.add(fieldController);
+    final TextEditingController fileNameController = TextEditingController();
+    String fileName = '';
+    String? path='';
 
-    fieldControllers.add(
-        FieldController(id: field['id'], question: field['label']));
-    TextEditingController fileNameController = TextEditingController();
-    String fileName='';
     fields.add(Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Column(
@@ -202,53 +248,47 @@ class FormViewController {
           Row(
             children: [
               Container(
-                child:ElevatedButton(
-                onPressed: () async {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles();
-                  if(result != null) {
+                child: ElevatedButton(
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform.pickFiles();
+                    if (result != null) {
+                      PlatformFile file = result.files.first;
+                      fileName = file.name;
+                      fileNameController.text = fileName;
+                      path=file.path;
 
-                    PlatformFile file = result.files.first;
-                    fileName=file.name;
-                    fileNameController.text=fileName;
+                      // Store file information in the FieldController
+                      fieldController.file = File(path!);
+                      fieldController.value = RxString(fileName);
 
-                    print(file.name);
-                    print(file.bytes);
-                    print(file.size);
-                    print(file.extension);
-                    print(file.path);
-                  } else {
-                    // User canceled the picker
-                  }
-                },
-                child: const Text('Choose File'),
-
-
-              ),
-
+                      print(file.name);
+                      print(file.bytes);
+                      print(file.size);
+                      print(file.extension);
+                      print(file.path);
+                    } else {
+                      // User canceled the picker
+                    }
+                  },
+                  child: const Text('Choose File'),
+                ),
               ),
               const SizedBox(width: 12),
-
-
-
-              //Text('Selected FILE NAME HERE'),
               Expanded(
                 child: TextField(
                   controller: fileNameController,
                   decoration: const InputDecoration(
-                    border:InputBorder.none,
+                    border: InputBorder.none,
                   ),
                 ),
               ),
             ],
-          )
-
+          ),
         ],
-
       ),
-
     ));
-
   }
 
+//  print(field)
 
 }
