@@ -12,6 +12,7 @@ class FieldController {
 
   FieldController({required this.id, required this.question, this.value, this.file, this.controller});
 
+
 }
 
 class FormViewController {
@@ -19,7 +20,8 @@ class FormViewController {
 
   static Map formData = {
     "title": "Loading...",
-    "fields": []
+    "fields": [],
+
   };
 
   static List<Widget> fields = [];
@@ -82,6 +84,8 @@ class FormViewController {
         ],
       ),
     ));
+    print('Answer to Text Field: ${getVorC(field['id']).controller.text}');
+
   }
 
   static void addNumberField(Map field) {
@@ -203,5 +207,8 @@ class FormViewController {
         ],
       ),
     ));
+
   }
+
+
 }
