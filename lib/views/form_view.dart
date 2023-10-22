@@ -19,10 +19,30 @@ class FormView extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
 
-            children: FormViewController.fields,
+            children: [
+              ...FormViewController.fields,
+              SizedBox(height: 25,),
+              ElevatedButton(
+                  onPressed: (){
+
+                  },
+                  child: Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    onPrimary: Colors.white,
+                  )
+
+
+              ),
+
+            ]
+
 
           ),
+
+
         ),
+
       ),
     );
   }
