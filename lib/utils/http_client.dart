@@ -54,8 +54,8 @@ class HttpClient {
         'email': userEmail, });
       // print(userEmail);
       //
-      // print(response.data);
-      print('----------------------------');
+      // print(response);
+      // print('----------------------------');
       return HttpResponse(
           data: response.data,
           statusCode: response.statusCode ?? 500
@@ -67,6 +67,41 @@ class HttpClient {
           data: e.response?.data, statusCode: e.response?.statusCode ?? 500);
     }
   }
+
+  static Future<HttpResponse> submitForms(String userEmail, int formId, String formData) async {
+
+    // print('Submitting form');
+    // print(userEmail);
+    // print(formId);
+    // print(formData);
+    try {
+      Response response = await post('/users/submitforms', {
+        'email': userEmail,
+        'formId': formId,
+        'data': formData,
+      });
+
+      // Handle the response, e.g., check the status code
+      if (response.statusCode == 201) {
+        print('Form submitted successfully');
+      } else {
+        print('Error submitting form');
+      }
+
+      return HttpResponse(
+        data: response.data,
+        statusCode: response.statusCode ?? 500,
+      );
+
+    } on DioException catch (e) {
+      print(e);
+      return HttpResponse(
+        data: e.response?.data,
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    }
+  }
+
 
 
 }

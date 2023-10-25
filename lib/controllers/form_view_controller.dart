@@ -261,11 +261,11 @@ class FormViewController {
                       fieldController.file = File(path!);
                       fieldController.value = RxString(fileName);
 
-                      print(file.name);
-                      print(file.bytes);
-                      print(file.size);
-                      print(file.extension);
-                      print(file.path);
+                      // print(file.name);
+                      // print(file.bytes);
+                      // print(file.size);
+                      // print(file.extension);
+                      // print(file.path);
                     } else {
                       // User canceled the picker
                     }

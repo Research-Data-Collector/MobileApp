@@ -97,6 +97,7 @@ class ProfilePage extends StatelessWidget {
                 itemCount: FormController.forms.length,
                 itemBuilder: (context, index) {
                   return Card(
+
                     color: Colors.grey,
                     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
 
@@ -107,7 +108,8 @@ class ProfilePage extends StatelessWidget {
                       onTap: () {
                         FormViewController.formData = FormController.forms[index].data;
                         //FormViewController.formDescription= FormController.forms[index].description;
-                        Get.to(()=> const FormView());
+                        Get.to(()=>FormView(formIdData:FormController.forms[index].id));
+                        //formId:int.parse(FormController.forms[index].id)
                       },
                     ),
                   );
