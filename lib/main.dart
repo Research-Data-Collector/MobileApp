@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:surveyy/auth/auth.dart';
+import 'package:surveyy/layout.dart';
 import 'package:surveyy/utils/http_client.dart';
 import 'package:get/get.dart';
 import 'package:surveyy/views/login.dart';
@@ -23,6 +25,16 @@ class SurveyY extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+
     return GetMaterialApp(
       title: 'Survey Y',
       debugShowCheckedModeBanner: false,
@@ -46,7 +58,7 @@ class SurveyY extends StatelessWidget {
           )),
       home: LoginPage(),
       getPages: [
-        GetPage(name: '/views', page: () => ProfilePage()),
+        GetPage(name: '/views', page: () => Layout()),
       ],
 
     );
