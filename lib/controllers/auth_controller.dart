@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:surveyy/layout.dart';
 import 'package:surveyy/views/profile.dart';
 import 'package:surveyy/utils/http_client.dart';
 
@@ -31,7 +32,7 @@ class AuthController {
 
       user = AuthUser.fromJSON(res.data['user']);
 
-      Get.offAll(()=>const ProfilePage());
+      Get.offAll(()=>const Layout());
     }
     else{
       Get.snackbar('Error', 'Invalid Credentials');

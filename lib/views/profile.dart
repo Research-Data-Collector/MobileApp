@@ -18,13 +18,11 @@ class ProfilePage extends StatelessWidget {
 
     FormController.fetchFormsForAdmin();
 
+
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFF0),
-          appBar: AppBar(
-            title: const Text('Profile'),
-
-          ),
-
+          appBar: AppBar(title: const Text('Profile'),),
       body: Column(
         children: [
           Container(
@@ -63,8 +61,8 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.grey,),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.grey,),
                           onPressed:(){
                             AuthController.logout();
                           },
@@ -123,39 +121,7 @@ class ProfilePage extends StatelessWidget {
 
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white60,
-        elevation: 1,
 
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              IconData(0xee98,
-                  fontFamily: 'MaterialIcons', matchTextDirection: true),
-            ),
-            label: 'Research',
-
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(IconData(0xf5a3, fontFamily: 'MaterialIcons')),
-            label: 'Unsynced',
-
-          ),
-        ],
-        onTap: (index) {
-          if (index == 1) {
-            // Navigate to the SubmissionPage when "Unsynced" icon is tapped
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SubmissionPage()), // Replace with your SubmissionPage widget
-            );
-          }
-        },
-        selectedItemColor: Color(0xff2772F0), // Change the label color here
-        unselectedItemColor: Colors.grey,
-      ),
     );
   }
 }
