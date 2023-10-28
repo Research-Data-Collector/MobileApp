@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 6746936653438163559),
       name: 'FormSubmissionModel',
-      lastPropertyId: const IdUid(3, 4143812211752773580),
+      lastPropertyId: const IdUid(5, 7864389559504295578),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -78,7 +78,7 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [9153111891142442946, 7864389559504295578],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -95,7 +95,7 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (FormSubmissionModel object, fb.Builder fbb) {
           final jsonDataOffset = fbb.writeString(object.jsonData);
-          fbb.startTable(4);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.formId);
           fbb.addOffset(2, jsonDataOffset);

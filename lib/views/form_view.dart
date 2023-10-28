@@ -68,15 +68,21 @@ class FormView extends StatelessWidget {
 
                     //await FormController.submitForm(formId, jsonData);
                     //print('Submitting form data:  $formId');
-                    final formSubmission = FormSubmissionModel(formId, jsonData);
-                    final store = getObjectBoxStore();
-                    final box = store.box<FormSubmissionModel>();
+
+
+
+                    final formSubmission = FormSubmissionModel(formId,jsonData);
+
+                     final store = getObjectBoxStore();
+                     final box = store.box<FormSubmissionModel>();
                     box.put(formSubmission);
                     final submissions = box.getAll();
+                     //print(FormViewController.formData['title']);
                     print("printint the object box");
                     submissions.forEach((submission) {
-                      print('Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
+                      print( ' ID: ${submission.id}, Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
                     });
+                   //box.removeAll();
                   } catch (e) {
                     print('Error submitting form: $e');
                   }

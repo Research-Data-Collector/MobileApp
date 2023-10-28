@@ -6,9 +6,15 @@ class FormSubmissionModel {
   int formId; // Your form ID
   String jsonData; // JSON data as a string
 
-  FormSubmissionModel(int formId, String jsonData, {this.id = 0})
-      : formId = formId,
+
+
+  FormSubmissionModel(int formId, String jsonData, {this.id=0})
+      :
+        formId = formId,
         jsonData = jsonData;
+
+
+
   }
 
   // @override

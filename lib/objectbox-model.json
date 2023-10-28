@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6746936653438163559",
-      "lastPropertyId": "3:4143812211752773580",
+      "lastPropertyId": "5:7864389559504295578",
       "name": "FormSubmissionModel",
       "properties": [
         {
@@ -36,7 +36,10 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    9153111891142442946,
+    7864389559504295578
+  ],
   "retiredRelationUids": [],
   "version": 1
 }
