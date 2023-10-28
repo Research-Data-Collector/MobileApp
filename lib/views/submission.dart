@@ -19,7 +19,7 @@ class SubmissionPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Unsynced Submissions')),
       body: submissions.isEmpty
-          ? Center(child: Text('No submissions available.'))
+          ? Center(child: Text('No unsynced submissions.'))
           : ListView.builder(
 
         itemCount: submissions.length,
