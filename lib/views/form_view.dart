@@ -1,111 +1,95 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:surveyy/controllers/form_view_controller.dart';
-
 import '../controllers/form_controller.dart';
+import '../entities.dart';
+import '../objectbox.g.dart';
+
+Store? _store;
+
+void initObjectBox() {
+  getApplicationDocumentsDirectory().then((dir) {
+    _store = Store(
+      getObjectBoxModel(),
+      directory: '${dir.path}/objectbox',
+
+    );
+
+  });
+}
+
+Store getObjectBoxStore() {
+  if (_store == null) {
+    initObjectBox();
+  }
+  return _store!;
+}
 
 class FormView extends StatelessWidget {
   final int formIdData;
   const FormView({super.key, required this.formIdData});
-  //const FormView({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     FormViewController.buildFields();
 
     return Scaffold(
       appBar: AppBar(
-        //title: Text(FormViewController.formData['title']),
-        title:Text(FormViewController.formData['title']),
+        title: Text(FormViewController.formData['title']),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-
             children: [
               ...FormViewController.fields,
-              SizedBox(height: 25,),
-              // ElevatedButton(
-              //     onPressed: (){
-              //       for (var field in FormViewController.fieldControllers) {
-              //         print(field.id);
-              //         print(field.question);
-              //         print(field.value);
-              //
-              //        print(field.file);
-              //        print(field.controller);
-              //
-              //       }
-              //
-              //     },
-              //     child: Text('Submit'),
-              //     style: ElevatedButton.styleFrom(
-              //       primary: Colors.blue,
-              //       onPrimary: Colors.white,
-              //     ),
-              // ),
+              SizedBox(height: 25),
               ElevatedButton(
                 onPressed: () async {
                   final formId = formIdData; // Your form ID
-                  // var data = <String, dynamic>{};
-                  //
-                  // for (var field in FormViewController.fieldControllers) {
-                  //   // Convert RxString to a regular string
-                  //   final value = field.value?.value ?? ''; // If value is null, set an empty string
-                  //
-                  //   // data[field.question] = value;
-                  //   // print(data);
-                  //
-                  //   data['id'] = field.id; // Adding a string value
-                  //   data['question'] = field.question; // Adding an integer value
-                  //   data['answer'] = field.value; // Adding a nested map
-                  //
-                  // }
 
-
-                  var data = <Map<String, dynamic>>[]; // Initialize a list of maps
+                  var data = <Map<String, dynamic>>[];
 
                   for (var field in FormViewController.fieldControllers) {
-                    final value = field.value?.value ?? ''; // If value is null, set an empty string
-
+                    final value = field.value?.value ?? '';
                     final fieldData = <String, dynamic>{
                       'id': field.id,
                       'question': field.question,
                       'answer': value,
                     };
-
-                    data.add(fieldData); // Add the field data to the list
+                    data.add(fieldData);
                   }
 
-                  // Convert data to a JSON string
                   final jsonData = jsonEncode(data);
 
                   try {
-                    await FormController.submitForm(formId, jsonData);
+
+                    //await FormController.submitForm(formId, jsonData);
+                    //print('Submitting form data:  $formId');
+                    final formSubmission = FormSubmissionModel(formId, jsonData);
+                    final store = getObjectBoxStore();
+                    final box = store.box<FormSubmissionModel>();
+                    box.put(formSubmission);
+                    final submissions = box.getAll();
+                    print("printint the object box");
+                    submissions.forEach((submission) {
+                      print('Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
+                    });
                   } catch (e) {
-                    // Handle the error, e.g., display an error message
                     print('Error submitting form: $e');
                   }
-                }, child: Text('Submit'),
+                },
+                child: Text('Submit'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
                   onPrimary: Colors.white,
                 ),
-              )
-
-
-
-            ]
-
-
+              ),
+            ],
           ),
-
-
         ),
-
       ),
     );
   }
