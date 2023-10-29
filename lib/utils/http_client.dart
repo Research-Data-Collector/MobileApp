@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:surveyy/models/form.dart';
 
@@ -104,4 +107,40 @@ class HttpClient {
 
 
 
+static Future<HttpResponse>  uploadtoS3(File file) async{
+
+
+  try{
+
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+          file.path,
+          filename: 'file.${file.path.split('/').last.split('.').last}',
+      ),
+      "ext": ".${file.path.split('/').last.split('.').last}"
+    });
+
+    Response response = await post('/files/save-file-s3', formData);
+
+    // Handle the response, e.g., check the status code
+    if (response.statusCode == 201) {
+      print('File uploaded successfully at s3 bucket');
+    } else {
+      print('Error uploading file');
+    }
+
+    return HttpResponse(
+      data: response.data,
+      statusCode: response.statusCode ?? 500,
+
+    );
+  } on DioException catch (e) {
+    print(e);
+    return HttpResponse(
+      data: e.response?.data,
+      statusCode: e.response?.statusCode ?? 500,
+    );
+  }
 }
+}
+

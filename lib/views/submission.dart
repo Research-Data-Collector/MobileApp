@@ -41,7 +41,8 @@ class SubmissionPage extends StatelessWidget {
                 title: Text('${FormViewController.formData['title']}'),
                 subtitle: Text('Submission ID: ${submission.id}'),
                 trailing: IconButton(
-                  icon: Icon(IconData(0xe175, fontFamily: 'MaterialIcons'), color: Colors.white, size: 30,),
+                  //icon: Icon(IconData(0xe175, fontFamily: 'MaterialIcons'), color: Colors.white, size: 30,),
+                  icon: Icon(Icons.upload, color: Colors.white, size: 30,),
                   onPressed: () {
                     FormController.submitForm(submission.formId,submission.jsonData);
                     box.remove(submission.id);
