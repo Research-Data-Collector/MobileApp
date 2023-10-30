@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:surveyy/controllers/form_view_controller.dart';
@@ -64,28 +65,47 @@ class FormView extends StatelessWidget {
 
                   final jsonData = jsonEncode(data);
 
-                  try {
+                  //check connection
+                  //if true upload to database
+                  //else upload to object box
 
-                    //await FormController.submitForm(formId, jsonData);
-                    //print('Submitting form data:  $formId');
+                  bool result = await InternetConnectionChecker().hasConnection;
+                  if(result == true) {
+                    print('YAY! Uploading continue!');
+                    try {
+
+                      await FormController.submitForm(formId, jsonData);
+                      //navigate to make a new form
 
 
 
+
+
+                    } catch (e) {
+                      print('Error submitting form: $e');
+                    }
+                  } else {
+                    print('No internet :( Reason:');
                     final formSubmission = FormSubmissionModel(formId,jsonData);
 
-                     final store = getObjectBoxStore();
-                     final box = store.box<FormSubmissionModel>();
+                    final store = getObjectBoxStore();
+                    final box = store.box<FormSubmissionModel>();
                     box.put(formSubmission);
                     final submissions = box.getAll();
-                     //print(FormViewController.formData['title']);
-                    print("printint the object box");
-                    submissions.forEach((submission) {
-                      print( ' ID: ${submission.id}, Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
-                    });
-                   //box.removeAll();
-                  } catch (e) {
-                    print('Error submitting form: $e');
+                    //print(FormViewController.formData['title']);
+                    // print("printint the object box");
+                    // submissions.forEach((submission) {
+                    //   print( ' ID: ${submission.id}, Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
+                    // });
+                    //box.removeAll();
+
                   }
+
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => FormView(formIdData: formIdData),
+                    ),
+                  );
                 },
                 child: Text('Submit'),
                 style: ElevatedButton.styleFrom(

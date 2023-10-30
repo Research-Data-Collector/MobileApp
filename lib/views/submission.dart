@@ -19,7 +19,7 @@ class SubmissionPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Unsynced Submissions')),
       body: submissions.isEmpty
-          ? Center(child: Text('No submissions available.'))
+          ? Center(child: Text('No unsynced submissions.'))
           : ListView.builder(
 
         itemCount: submissions.length,
@@ -41,7 +41,8 @@ class SubmissionPage extends StatelessWidget {
                 title: Text('${FormViewController.formData['title']}'),
                 subtitle: Text('Submission ID: ${submission.id}'),
                 trailing: IconButton(
-                  icon: Icon(IconData(0xe175, fontFamily: 'MaterialIcons'), color: Colors.white, size: 30,),
+                  //icon: Icon(IconData(0xe175, fontFamily: 'MaterialIcons'), color: Colors.white, size: 30,),
+                  icon: Icon(Icons.upload, color: Colors.white, size: 30,),
                   onPressed: () {
                     FormController.submitForm(submission.formId,submission.jsonData);
                     box.remove(submission.id);

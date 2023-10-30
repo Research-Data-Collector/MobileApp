@@ -1,8 +1,25 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:surveyy/utils/http_client.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
+ispermissionallowed() async {
+  var permissionStatus = await Permission.storage.request();
+  print("permission status");
+  print(permissionStatus);
+  if (permissionStatus.isGranted) {
+    return true;
+//permission granted
+  }else{
+    ispermissionallowed();
+  }
+
+}
 
 class FieldController {
   String id;
@@ -249,27 +266,77 @@ class FormViewController {
             children: [
               Container(
                 child: ElevatedButton(
-                  onPressed: () async {
-                    FilePickerResult? result = await FilePicker.platform.pickFiles();
-                    if (result != null) {
-                      PlatformFile file = result.files.first;
-                      fileName = file.name;
-                      fileNameController.text = fileName;
-                      path=file.path;
 
-                      // Store file information in the FieldController
-                      fieldController.file = File(path!);
-                      fieldController.value = RxString(fileName);
 
-                      // print(file.name);
-                      // print(file.bytes);
-                      // print(file.size);
-                      // print(file.extension);
-                      // print(file.path);
-                    } else {
-                      // User canceled the picker
-                    }
-                  },
+
+
+
+
+          onPressed: () async {
+            // Check if permissions are granted
+            final isPermissionGranted = await ispermissionallowed();
+            print('Permissions granted: $isPermissionGranted');
+
+            if (!isPermissionGranted) {
+
+              print('Permissions not granted');
+              return;
+            }
+
+            FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+            if (result != null) {
+                File file = File(result.files.single.path!);
+                print(fileName);
+
+                HttpResponse response = await HttpClient.uploadtoS3(file);
+                print('Response data: ${response.data}');
+
+                // Store file information in the FieldController
+                fieldController.file = File(path!);
+                fieldController.value = RxString(fileName);
+              }
+            else{
+
+              print('User canceled file picking');
+            }
+    },
+
+                  // onPressed: () async {
+                  //   IsPermissionAllowed();
+                  //   FilePickerResult? result = await FilePicker.platform.pickFiles();
+                  //
+                  //   if (result != null) {
+                  //     PlatformFile file = result.files.first;
+                  //     fileName = file.name;
+                  //     fileNameController.text = fileName;
+                  //     path=file.path;
+                  //     print('file: $file.bytes');
+                  //     Uint8List fileBytes = file.bytes!;
+                  //
+                  //     print('fileBytes: $fileBytes');
+                  //     print('fileBytes: ${fileBytes.length}');
+                  //     print('fileBytes: ${fileBytes.runtimeType}');
+                  //     print("going to httpclient");
+                  //
+                  //     HttpResponse response=await HttpClient.uploadtoS3(fileBytes);
+                  //     print(response.data);
+                  //
+                  //     // Store file information in the FieldController
+                  //     fieldController.file = File(path!);
+                  //     fieldController.value = RxString(fileName);
+                  //
+                  //     // print(file.name);
+                  //     // print(file.bytes);
+                  //     // print(file.size);
+                  //     // print(file.extension);
+                  //     // print(file.path);
+                  //   } else {
+                  //     // User canceled the picker
+                  //   }
+                  // },
+
+
                   child: const Text('Choose File'),
                 ),
               ),
