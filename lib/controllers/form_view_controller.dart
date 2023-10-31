@@ -286,17 +286,24 @@ class FormViewController {
             FilePickerResult? result = await FilePicker.platform.pickFiles();
 
             if (result != null) {
-                File file = File(result.files.single.path!);
-                print(fileName);
+              File file = File(result.files.single.path!);
+              fileName = result.files.single.name;
+              fileNameController.text = fileName;
 
-                HttpResponse response = await HttpClient.uploadtoS3(file);
-                print('Response data: ${response.data}');
+              // HttpResponse response = await HttpClient.uploadtoS3(file);
 
-                // Store file information in the FieldController
-                fieldController.file = File(path!);
-                fieldController.value = RxString(fileName);
-              }
+
+              //print('file: $file');
+              fieldController.file=file;
+              //print('fieldController.file: ${fieldController.file}');
+
+              // fieldController.value = RxString(response.data);//need to retrieve the file form the bucket
+              print(fieldController.value);//this contains the name of the file in the bucket
+            }
             else{
+
+
+
 
               print('User canceled file picking');
             }
