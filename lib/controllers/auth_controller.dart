@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:surveyy/layout.dart';
+import 'package:surveyy/views/login.dart';
 import 'package:surveyy/views/profile.dart';
 import 'package:surveyy/utils/http_client.dart';
 
@@ -45,7 +46,7 @@ class AuthController {
 
     emailController.clear();
     passwordController.clear();
-    Get.off(() => const Auth());
+    Get.off(() => LoginPage());
   }
 
   static saveLastActivityTimeStamp() async{
