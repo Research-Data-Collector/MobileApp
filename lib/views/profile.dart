@@ -8,9 +8,11 @@ import 'package:surveyy/views/form_view.dart';
 import 'package:surveyy/views/submission.dart';
 
 import '../controllers/form_controller.dart';
-
+final fname=AuthController.user.fName[0];
+final Name=AuthController.user.lName.isNotEmpty?fname+AuthController.user.lName[0] :fname;
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +41,18 @@ class ProfilePage extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         width: 80,
                         height: 80,
-                        decoration:BoxDecoration(
 
-                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                          image: DecorationImage(
+                        child: CircleAvatar(
+                          backgroundColor: Colors.lightBlueAccent,
+                          child: Text(Name,style: TextStyle(fontSize: 30),),
+                          radius: 50.0,
 
-                            image: AssetImage("assets/images/profilepic.jfif"),
-                            fit: BoxFit.cover,
-                          ),
                         ),
+
                       ),
                       const SizedBox(width: 16.0),
-                      const Text(
-                        "John de Gone",
+                      Text(
+                        AuthController.user.fName + " " + AuthController.user.lName,
 
                         style: TextStyle(
                           fontSize: 24.0,

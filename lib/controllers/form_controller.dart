@@ -21,7 +21,6 @@ class FormController {
     }
 
   static Future<void> submitForm(int formId, String formData) async {
-    // Show a loading indicator while submitting the form
     loading.value = true;
 
     try {

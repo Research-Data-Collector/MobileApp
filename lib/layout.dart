@@ -48,8 +48,8 @@ class Layout extends StatelessWidget {
           page.value = index;
         },
         children: [
-          const ProfilePage(),
-          const SubmissionPage(),
+          ProfilePage(),
+          SubmissionPage(),
         ],
       ),
     );

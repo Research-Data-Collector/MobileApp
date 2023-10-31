@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,6 +9,7 @@ import 'package:surveyy/controllers/form_view_controller.dart';
 import '../controllers/form_controller.dart';
 import '../entities.dart';
 import '../objectbox.g.dart';
+import 'package:surveyy/utils/http_client.dart';
 
 Store? _store;
 
@@ -49,55 +52,96 @@ class FormView extends StatelessWidget {
               SizedBox(height: 25),
               ElevatedButton(
                 onPressed: () async {
-                  final formId = formIdData; // Your form ID
-
-                  var data = <Map<String, dynamic>>[];
-
-                  for (var field in FormViewController.fieldControllers) {
-                    final value = field.value?.value ?? '';
-                    final fieldData = <String, dynamic>{
-                      'id': field.id,
-                      'question': field.question,
-                      'answer': value,
-                    };
-                    data.add(fieldData);
-                  }
-
-                  final jsonData = jsonEncode(data);
-
-                  //check connection
-                  //if true upload to database
-                  //else upload to object box
-
                   bool result = await InternetConnectionChecker().hasConnection;
-                  if(result == true) {
-                    print('YAY! Uploading continue!');
+                  if(result==true){
+                    print("Connected to internet....");
+                    final formId = formIdData; // Your form ID
+
+                    var data = <Map<String, dynamic>>[];
+
+                    for (var field in FormViewController.fieldControllers) {
+
+                      final file = field.file;
+
+                      if(file != null) {
+
+                        HttpResponse response = await HttpClient.uploadtoS3(file);
+                        // Store file information in the FieldController
+
+                        //print('file: $file');
+
+                        //print('fieldController.file: ${fieldController.file}');
+
+                        field.value = RxString(response.data);
+
+                      }
+                      final value = field.value?.value ?? '';
+
+                      final fieldData = <String, dynamic>{
+                        'id': field.id,
+                        'question': field.question,
+                        'answer': value,
+                      };
+                      data.add(fieldData);
+
+
+
+                    }
+
+                    final jsonData = jsonEncode(data);
                     try {
 
                       await FormController.submitForm(formId, jsonData);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Submission Uploaded.')),);
                       //navigate to make a new form
-
-
-
 
 
                     } catch (e) {
                       print('Error submitting form: $e');
                     }
+
+
                   } else {
                     print('No internet :( Reason:');
+
+                    final formId = formIdData; // Your form ID
+
+                    var data = <Map<String, dynamic>>[];
+
+                    for (var field in FormViewController.fieldControllers) {
+                      final value = field.value?.value ?? '';
+                      final fieldData = <String, dynamic>{
+                        'id': field.id,
+                        'question': field.question,
+                        'answer': value,
+                        'file': field.file?.path ?? '',
+                      };
+                      data.add(fieldData);
+                      //print(fieldData);
+                    }
+
+                    final jsonData = jsonEncode(data);
+                    //print(jsonData);
+
+
                     final formSubmission = FormSubmissionModel(formId,jsonData);
 
                     final store = getObjectBoxStore();
                     final box = store.box<FormSubmissionModel>();
                     box.put(formSubmission);
-                    final submissions = box.getAll();
-                    //print(FormViewController.formData['title']);
-                    // print("printint the object box");
-                    // submissions.forEach((submission) {
-                    //   print( ' ID: ${submission.id}, Form ID: ${submission.formId}, JSON Data: ${submission.jsonData}');
-                    // });
-                    //box.removeAll();
+                    //final submissions = box.getAll();
+
+                    try {
+
+                      await FormController.submitForm(formId, jsonData);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('No connection...Uploading to local storage...')),);
+
+
+                    } catch (e) {
+                      print('Error submitting form: $e');
+                    }
 
                   }
 
@@ -112,6 +156,7 @@ class FormView extends StatelessWidget {
                   primary: Colors.blue,
                   onPrimary: Colors.white,
                 ),
+
               ),
             ],
           ),
