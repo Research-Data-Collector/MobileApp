@@ -15,7 +15,8 @@ class HttpClient {
   static Dio dio = Dio();
 
   static initialize() {
-    dio.options.baseUrl = 'http://10.0.2.2:3000';
+    //dio.options.baseUrl = 'http://10.0.2.2:3000';
+    dio.options.baseUrl ='https://webappbackend-production.up.railway.app';
     dio.options.connectTimeout = const Duration(seconds: 5);
     dio.options.receiveTimeout = const Duration(seconds: 5);
 
