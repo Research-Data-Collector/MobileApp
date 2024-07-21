@@ -20,6 +20,7 @@ class AuthController {
 
   static late AuthUser user;
 
+
   static signIn() async {
     loading.value = true;
     HttpResponse res = await HttpClient.testRoute({

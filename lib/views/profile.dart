@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.grey,),
+                            backgroundColor: Colors.grey,),
                           onPressed:(){
                             AuthController.logout();
                           },
