@@ -290,7 +290,7 @@ class FormViewController {
               fileName = result.files.single.name;
               fileNameController.text = fileName;
 
-              // HttpResponse response = await HttpClient.uploadtoS3(file);
+              HttpResponse response = await HttpClient.uploadtoS3(file);
 
 
               //print('file: $file');
